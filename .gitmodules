@@ -1,0 +1,18 @@
+[submodule "submodules/GctkImGui"]
+	path = submodules/GctkImGui
+	url = https://github.com/DatSpygineer/GctkImGui
+[submodule "submodules/glfw"]
+	path = submodules/glfw
+	url = https://github.com/glfw/glfw
+[submodule "submodules/lua"]
+	path = submodules/lua
+	url = https://github.com/walterschell/Lua
+[submodule "submodules/soil2"]
+	path = submodules/soil2
+	url = https://github.com/SpartanJ/SOIL2.git
+[submodule "submodules/cglm"]
+	path = submodules/cglm
+	url = https://github.com/recp/cglm
+[submodule "submodules/glew"]
+	path = submodules/glew
+	url = https://github.com/Perlmint/glew-cmake.git
