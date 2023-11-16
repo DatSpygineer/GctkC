@@ -27,8 +27,18 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/submodules/glfw)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/submodules/lua)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/submodules/cglm EXCLUDE_FROM_ALL)
 
-set(glew-cmake_BUILD_STATIC 1)
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/submodules/glew)
+if (WIN32)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		set(GLEW_LIBRARIES ${CMAKE_CURRENT_LIST_DIR}/libs/glew-2.1.0/lib/Release/x64/glew32.lib)
+	else()
+		set(GLEW_LIBRARIES ${CMAKE_CURRENT_LIST_DIR}/libs/glew-2.1.0/lib/Release/Win32/glew32.lib)
+	endif()
+	set(GLEW_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/submodules/glew/include)
+else()
+	set(glew-cmake_BUILD_STATIC ON)
+	add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/submodules/glew)
+	set(GLEW_LIBRARIES libglew_static)
+endif()
 
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWERCASE)
 if (CMAKE_BUILD_TYPE_LOWERCASE STREQUAL "debug")
@@ -37,20 +47,17 @@ else()
 	set(GctkDebug 0)
 endif()
 
+file(GLOB GCTK_SRC "${CMAKE_CURRENT_LIST_DIR}/src/*.c")
+file(GLOB GCTK_LUA_BINDING_SRC "${CMAKE_CURRENT_LIST_DIR}/src/lua_bindings/*.c")
+
 add_library(gctk SHARED
-	src/gctk.c
-	src/gctk_math.c
-	src/gctk_debug.c
-	src/gctk_filesys.c
-	src/gctk_string.c
-		src/gctk_texture.c
-		src/gctk_shader.c
-		src/gctk_sprite.c
+	${GCTK_SRC}
+	${GCTK_LUA_BINDING_SRC}
 )
 target_compile_definitions(gctk PRIVATE GCTK_DLL_EXPORT)
 target_compile_definitions(gctk PUBLIC GCTK_DEBUG=${GctkDebug})
-target_include_directories(gctk PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
-target_link_libraries(gctk PUBLIC lua_static glfw libglew_static soil2 OpenGL::GL cglm_headers)
+target_include_directories(gctk PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${GLEW_INCLUDE_DIRS})
+target_link_libraries(gctk PUBLIC lua_static glfw ${GLEW_LIBRARIES} soil2 OpenGL::GL cglm_headers)
 
 add_executable(gctk_test test/main.c)
 target_link_libraries(gctk_test PRIVATE gctk)

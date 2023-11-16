@@ -4,6 +4,8 @@
 #include <GL/glew.h>
 #include <SOIL2/SOIL2.h>
 
+GCTK_CONST_IMPL Texture NULL_TEXTURE = { 0 };
+
 static size_t GctkGetPixelSizeByFormat(TextureFormat format) {
 	switch (format) {
 		case GCTK_BC4: case GCTK_LUMINANCE: return 1;
@@ -174,7 +176,7 @@ bool GctkCreateTexture(const uint8_t* data, size_t data_size, TextureSettings se
 		.height = h,
 		.depth = 0,
 		.frame_count = 0,
-		.target = GCTK_TEXTURE_2D,
+		.target = settings.is_cubemap ? GCTK_TEXTURE_CUBEMAP : GCTK_TEXTURE_2D,
 		.filter = settings.filter,
 		.clamp_r = false,
 		.clamp_s = settings.clamp_s,
@@ -191,6 +193,11 @@ bool GctkCreateTexture(const uint8_t* data, size_t data_size, TextureSettings se
 bool GctkCreateTextureFromFile(const char* path, TextureSettings settings, Texture* texture) {
 	int w, h, c;
 	uint8_t* image_data = SOIL_load_image(path, &w, &h, &c, SOIL_LOAD_AUTO);
+	if (image_data == NULL) {
+		GCTK_LOG_ERR(GCTK_ERROR_LOAD_TEXTURE, "Failed to load texture: Texture data is NULL pointer!");
+		return false;
+	}
+
 	TextureInfo info = {
 			.width = w,
 			.height = h,
@@ -257,7 +264,7 @@ bool GctkLoadTextureFromFile(const char* path, Texture* texture) {
 	size_t pos = ftell(f);
 	fseek(f, 0, SEEK_END);
 	size_t end = ftell(f);
-	fseek(f, pos, SEEK_SET);
+	fseek(f, (long)pos, SEEK_SET);
 
 	size_t image_size = end - pos;
 	uint8_t* image_data = (uint8_t*)malloc(image_size);

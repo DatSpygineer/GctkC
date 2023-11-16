@@ -85,6 +85,7 @@ GCTK_API Vec3 Vec3Cross(Vec3 a, Vec3 b);
 GCTK_API float Vec3Dist(Vec3 a, Vec3 b);
 GCTK_API float Vec3Length(Vec3 vec);
 GCTK_API Vec3 Vec3Norm(Vec3 vec);
+GCTK_API Vec2 Vec3XY(Vec3 vec);
 
 GCTK_CONST Vec3 VEC3_ZERO;
 GCTK_CONST Vec3 VEC3_UNIT_X;
@@ -110,6 +111,22 @@ GCTK_API float Vec4Dot(Vec4 a, Vec4 b);
 GCTK_API float Vec4Dist(Vec4 a, Vec4 b);
 GCTK_API float Vec4Length(Vec4 vec);
 GCTK_API Vec4 Vec4Norm(Vec4 vec);
+GCTK_API Vec3 Vec4XYZ(Vec4 vec);
+
+#define QuatAdd Vec4Add
+#define QuatAddScalar Vec4AddScalar
+#define QuatSub Vec4Sub
+#define QuatSubScalar Vec4SubScalar
+#define QuatMul Vec4Mul
+#define QuatMulScalar Vec4MulScalar
+#define QuatDiv Vec4Div
+#define QuatDivScalar Vec4DivScalar
+#define QuatNeg Vec4Neg
+#define QuatEq Vec4Eq
+#define QuatDot Vec4Dot
+#define QuatDist Vec4Dist
+#define QuatLength Vec4Length
+#define QuatNorm Vec4Norm
 
 GCTK_CONST Vec4 VEC4_ZERO;
 GCTK_CONST Vec4 VEC4_UNIT_X;
@@ -117,7 +134,17 @@ GCTK_CONST Vec4 VEC4_UNIT_Y;
 GCTK_CONST Vec4 VEC4_UNIT_Z;
 GCTK_CONST Vec4 VEC4_UNIT_W;
 GCTK_CONST Vec4 VEC4_ONE;
+
+#define QUAT_ZERO VEC4_ZERO
+#define QUAT_UNIT_X VEC4_UNIT_X
+#define QUAT_UNIT_Y VEC4_UNIT_Y
+#define QUAT_UNIT_Z VEC4_UNIT_Z
+#define QUAT_UNIT_W VEC4_UNIT_W
+#define QUAT_ONE VEC4_ONE
 #define QUAT_IDENTITY VEC4_UNIT_W
+
+#define QuatCreate(__x, __y, __z, __w) ((Quat){ (__x), (__y), (__z), (__w) })
+#define QuatSpead(__vec) (__vec).x, (__vec).y, (__vec).z, (__vec).w
 
 GCTK_API Quat QuatFromAxisAngle(AxisAngle aa);
 GCTK_API AxisAngle AxisAngleFromQuat(Quat q);
@@ -175,6 +202,12 @@ GCTK_API Mat4 Mat4Mul(Mat4 a, Mat4 b);
 GCTK_API Mat4 Mat4Transpose(Mat4 value);
 GCTK_API bool Mat4Eq(Mat4 a, Mat4 b);
 
+GCTK_API Vec4 Mat4GetColumn(Mat4 mat, int idx);
+GCTK_API Vec3 Mat4GetTranslation(Mat4 mat);
+GCTK_API Quat Mat4GetRotation(Mat4 mat);
+GCTK_API Vec3 Mat4GetScale(Mat4 mat);
+GCTK_API Vec4 Mat4GetProjection(Mat4 mat);
+
 GCTK_API Mat4* Mat4Translate(Mat4* mat, Vec3 translation);
 GCTK_API Mat4* Mat4Scale(Mat4* mat, Vec3 scale);
 GCTK_API Mat4* Mat4Rotate(Mat4* mat, Quat rotation);
@@ -208,6 +241,11 @@ GCTK_API float RandomFloat(float min, float max);
 GCTK_API Vec2 RandomVec2(Vec2 min, Vec2 max);
 GCTK_API Vec3 RandomVec3(Vec3 min, Vec3 max);
 GCTK_API Vec4 RandomVec4(Vec4 min, Vec4 max);
+
+#define PI 3.14159265359f
+
+#define DegToRad(__deg__) ((__deg__) * (PI / 180.0f))
+#define RadToDeg(__rad__) ((__rad__) * (180.0f / PI))
 
 GCTK_API Mat4 GctkCreateTransform(Vec3 position, Vec3 size, Vec3 scale, Quat rotation);
 

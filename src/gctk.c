@@ -13,7 +13,6 @@ extern DWORD GctkDefaultConsoleColor;
 
 static struct {
 	GLFWwindow* pWindow;
-	lua_State* pLua;
 	int iMonitor;
 	bool bFullscreen;
 	char szName[64];
@@ -25,7 +24,6 @@ static struct {
 	const char* szLuaMainSrc;
 } GameInstance = {
 	.pWindow = NULL,
-	.pLua = NULL,
 	.iMonitor = -1,
 	.bFullscreen = false,
 	.szName = { 0 },
@@ -37,10 +35,18 @@ static struct {
 	NULL
 };
 
+extern lua_State* GctkLuaState;
+
 GctkStandardCallbacks GctkCallbacks = { NULL };
 
 ErrorCode GctkInit(const char* name, const char* author, int argc, char** argv) {
 	errno = 0; // Make sure error code is 0 at start.
+
+#ifdef _WIN32
+	CONSOLE_SCREEN_BUFFER_INFO con_info;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &con_info);
+	GctkDefaultConsoleColor = con_info.wAttributes;
+#endif
 
 	strcpy(GameInstance.szName, name);
 	strcpy(GameInstance.szAuthor, author);
@@ -92,14 +98,12 @@ ErrorCode GctkInit(const char* name, const char* author, int argc, char** argv) 
 		return GCTK_ERROR_GLEW_INIT;
 	}
 
-	GameInstance.pLua = luaL_newstate();
-	if (GameInstance.pLua == NULL) {
-		GCTK_LOG_ERR(GCTK_ERROR_LUA_INIT, "Failed to create Lua state!");
-	}
-	if (GameInstance.szLuaMainSrc != NULL) {
-		if (luaL_dostring(GameInstance.pLua, GameInstance.szLuaMainSrc) != LUA_OK) {
-			GCTK_LOG_ERR(GCTK_ERROR_GLEW_INIT, "Failed to run main lua code: %s", lua_tostring(GameInstance.pLua, -1));
+	if (!GctkInitLua()) {
+		ErrorCode error = GctkGetError(NULL);
+		if (error == GCTK_NO_ERROR) {
+			return GCTK_ERROR_LUA_INIT;
 		}
+		return error;
 	}
 
 	glEnable(GL_BLEND);
@@ -137,17 +141,7 @@ bool GctkUpdate() {
 	return !glfwWindowShouldClose(GameInstance.pWindow);
 }
 ErrorCode GctkQuit() {
-	if (GameInstance.pLua != NULL) {
-		if (lua_getglobal(GameInstance.pLua, "OnClose") != LUA_TNIL) {
-			if (lua_pcall(GameInstance.pLua, 0, 0, 0) != LUA_OK) {
-				GCTK_LOG_ERR(GCTK_ERROR_LUA_RUNTIME, "Failed to call function 'OnClose': %s", lua_tostring(GameInstance.pLua, -1));
-			}
-		} else {
-			lua_pop(GameInstance.pLua, 1);
-		}
-		lua_close(GameInstance.pLua);
-	}
-
+	GctkCloseLua();
 	if (GameInstance.pWindow != NULL) {
 		glfwDestroyWindow(GameInstance.pWindow);
 	}

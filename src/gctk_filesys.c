@@ -1,6 +1,9 @@
 #include "gctk_filesys.h"
 
-#ifndef _WIN32
+#ifdef _WIN32
+	#include <shlobj_core.h>
+	#include <direct.h>
+#else
 	#include <fcntl.h>
 #if defined(__APPLE__) || defined(__FreeBSD__)
 	#include <copyfile.h>

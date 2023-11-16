@@ -47,13 +47,15 @@ typedef struct TextureInfo {
 
 typedef struct TextureSettings {
 	bool clamp_s, clamp_t;
-	bool filter, mipmaps;
+	bool filter, mipmaps, is_cubemap;
 } TextureSettings;
 
 typedef struct Texture {
 	uint32_t id, target;
 	TextureInfo info;
 } Texture;
+
+GCTK_CONST Texture NULL_TEXTURE;
 
 /**
  * @brief Create GCTk texture from external texture format.

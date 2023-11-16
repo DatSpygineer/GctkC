@@ -31,16 +31,27 @@ static FILE* GctkGetLogFile() {
 	if (GctkLogFile == NULL) {
 		char log_path[GCTK_PATH_MAX] = { 0 };
 		GctkGetLogPath(log_path);
-		return fopen(log_path, "a+");
+
+		if (GctkFileExists(log_path)) {
+			return fopen(log_path, "a");
+		} else {
+			return fopen(log_path, "w");
+		}
 	}
 	return GctkLogFile;
 }
 static void GctkFormatDebugMessage(const char* caller_file, const char* caller_func, size_t caller_line, const char* message,
-								   const char* message_type) {
+								   const char* message_type, bool write_log) {
 	Date date = GctkDateNow();
-	fprintf(GctkGetLogFile(), GCTK_DATE_FORMAT " [%s] - %s:" GCTK_SIZE_FORMAT " [%s]: %s\n",
-		GCTK_DATE_SPREAD(date), message_type, caller_file, caller_line, caller_func, message
-	);
+	if (write_log) {
+		FILE* log_file = GctkGetLogFile();
+		if (log_file != NULL) {
+			fprintf(log_file, GCTK_DATE_FORMAT " [%s] - %s:" GCTK_SIZE_FORMAT " [%s]: %s\n",
+					GCTK_DATE_SPREAD(date), message_type, caller_file, caller_line, caller_func, message
+			);
+		}
+	}
+
 	printf(GCTK_DATE_FORMAT " [%s] - %s:" GCTK_SIZE_FORMAT " [%s]: %s\n",
 		GCTK_DATE_SPREAD(date), message_type, caller_file, caller_line, caller_func, message
 	);
@@ -98,18 +109,21 @@ void GctkDebugLogV(const char* caller_file, const char* caller_func, size_t call
 	switch (type) {
 		case GCTK_MESSAGE_WARNING: {
 #ifdef _WIN32
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 #else
 			printf("\x1B[33;1m");
 #endif
 		} break;
 		case GCTK_MESSAGE_ERROR: {
 #ifdef _WIN32
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
 #else
 			printf("\x1B[31m");
 #endif
 		} break;
 		case GCTK_MESSAGE_FATAL_ERROR: {
 #ifdef _WIN32
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
 #else
 			printf("\x1B[31;1m");
 #endif
@@ -118,10 +132,14 @@ void GctkDebugLogV(const char* caller_file, const char* caller_func, size_t call
 	}
 
 	vsnprintf(message, 256, format, args);
-	GctkFormatDebugMessage(caller_file, caller_func, caller_line, message, type_str);
+	GctkFormatDebugMessage(caller_file, caller_func, caller_line, message, type_str, type != GCTK_MESSAGE_WARNING);
 
 	if (type != GCTK_MESSAGE_INFO) {
+#ifdef _WIN32
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GctkDefaultConsoleColor);
+#else
 		printf("\x1B[0m");
+#endif
 	}
 }
 
@@ -145,6 +163,8 @@ ErrorCode GctkGetError(const char** message) {
 }
 
 void GctkCrash() {
+	GctkDebugLog(GCTK_GET_DEBUG_TRACE, GCTK_MESSAGE_FATAL_ERROR, "GAME CRASH TRIGGERED!!");
+
 	Date date = GctkDateNow();
 	char temp[64] = { 0 };
 	char dest_path[GCTK_PATH_MAX] = { 0 };

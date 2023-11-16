@@ -50,10 +50,10 @@ Vec2 Vec2Norm(Vec2 vec) {
 	return len > 0 ? Vec2DivScalar(vec, len) : (Vec2){0.0f };
 }
 
-const Vec2 VEC2_ZERO = { 0, 0 };
-const Vec2 VEC2_UNIT_X = { 1, 0 };
-const Vec2 VEC2_UNIT_Y = { 0, 1 };
-const Vec2 VEC2_ONE  = { 1, 1 };
+GCTK_CONST_IMPL Vec2 VEC2_ZERO = { 0, 0 };
+GCTK_CONST_IMPL Vec2 VEC2_UNIT_X = { 1, 0 };
+GCTK_CONST_IMPL Vec2 VEC2_UNIT_Y = { 0, 1 };
+GCTK_CONST_IMPL Vec2 VEC2_ONE  = { 1, 1 };
 
 Vec3 Vec3FromSingle(float value) {
 	return (Vec3){ value, value, value };
@@ -106,12 +106,15 @@ Vec3 Vec3Norm(Vec3 vec) {
 	const float len = Vec3Length(vec);
 	return len > 0 ? Vec3DivScalar(vec, len) : (Vec3){0.0f };
 }
+Vec2 Vec3XY(Vec3 vec) {
+	return Vec2Create(vec.x, vec.y);
+}
 
-const Vec3 VEC3_ZERO = { 0, 0, 0 };
-const Vec3 VEC3_UNIT_X = { 1, 0, 0 };
-const Vec3 VEC3_UNIT_Y = { 0, 1, 0 };
-const Vec3 VEC3_UNIT_Z = { 0, 0, 1 };
-const Vec3 VEC3_ONE  = { 1, 1, 1 };
+GCTK_CONST_IMPL Vec3 VEC3_ZERO = { 0, 0, 0 };
+GCTK_CONST_IMPL Vec3 VEC3_UNIT_X = { 1, 0, 0 };
+GCTK_CONST_IMPL Vec3 VEC3_UNIT_Y = { 0, 1, 0 };
+GCTK_CONST_IMPL Vec3 VEC3_UNIT_Z = { 0, 0, 1 };
+GCTK_CONST_IMPL Vec3 VEC3_ONE  = { 1, 1, 1 };
 
 Vec4 Vec4FromSingle(float value) {
 	return (Vec4){ value, value, value, value };
@@ -158,36 +161,39 @@ float Vec4Length(Vec4 vec) {
 Vec4 Vec4Norm(Vec4 vec) {
 	return Vec4DivScalar(vec, Vec4Length(vec));
 }
+Vec3 Vec4XYZ(Vec4 vec) {
+	return Vec3Create(vec.x, vec.y, vec.z);
+}
 
 Quat QuatFromAxisAngle(AxisAngle aa) {
 	Quat q = { 0 };
-	glm_quat(q.items, aa.angle, aa.axis.x, aa.axis.y, aa.axis.z);
+	glm_quat(q.items, DegToRad(aa.angle), aa.axis.x, aa.axis.y, aa.axis.z);
 	return q;
 }
 AxisAngle AxisAngleFromQuat(Quat q) {
 	AxisAngle aa;
-	aa.angle = glm_quat_angle(q.items);
+	aa.angle = RadToDeg(glm_quat_angle(q.items));
 	glm_quat_axis(q.items, aa.axis.items);
 	return aa;
 }
 
-const Vec4 VEC4_ZERO   = { 0, 0, 0, 0 };
-const Vec4 VEC4_UNIT_X = { 1, 0, 0, 0 };
-const Vec4 VEC4_UNIT_Y = { 0, 1, 0, 0 };
-const Vec4 VEC4_UNIT_Z = { 0, 0, 1, 0 };
-const Vec4 VEC4_UNIT_W = { 0, 0, 0, 1 };
-const Vec4 VEC4_ONE    = { 1, 1, 1, 1 };
+GCTK_CONST_IMPL Vec4 VEC4_ZERO   = { 0, 0, 0, 0 };
+GCTK_CONST_IMPL Vec4 VEC4_UNIT_X = { 1, 0, 0, 0 };
+GCTK_CONST_IMPL Vec4 VEC4_UNIT_Y = { 0, 1, 0, 0 };
+GCTK_CONST_IMPL Vec4 VEC4_UNIT_Z = { 0, 0, 1, 0 };
+GCTK_CONST_IMPL Vec4 VEC4_UNIT_W = { 0, 0, 0, 1 };
+GCTK_CONST_IMPL Vec4 VEC4_ONE    = { 1, 1, 1, 1 };
 
-const Color COLOR_TRANSPARENT =	{ 0 };
-const Color COLOR_BLACK = 		{ .r = 0.0f, .g = 0.0f, .b = 0.0f, .a = 1.0f };
-const Color COLOR_GRAY = 		{ .r = 0.5f, .g = 0.5f, .b = 0.5f, .a = 1.0f };
-const Color COLOR_WHITE = 		{ .r = 1.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f };
-const Color COLOR_RED = 		{ .r = 1.0f, .g = 0.0f, .b = 0.0f, .a = 1.0f };
-const Color COLOR_GREEN = 		{ .r = 0.0f, .g = 1.0f, .b = 0.0f, .a = 1.0f };
-const Color COLOR_YELLOW =		{ .r = 1.0f, .g = 1.0f, .b = 0.0f, .a = 1.0f };
-const Color COLOR_BLUE = 		{ .r = 0.0f, .g = 0.0f, .b = 1.0f, .a = 1.0f };
-const Color COLOR_MAGENTA = 	{ .r = 1.0f, .g = 0.0f, .b = 1.0f, .a = 1.0f };
-const Color COLOR_CYAN = 		{ .r = 0.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_TRANSPARENT =	{ 0 };
+GCTK_CONST_IMPL Color COLOR_BLACK = 		{ .r = 0.0f, .g = 0.0f, .b = 0.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_GRAY = 		{ .r = 0.5f, .g = 0.5f, .b = 0.5f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_WHITE = 		{ .r = 1.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_RED = 		{ .r = 1.0f, .g = 0.0f, .b = 0.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_GREEN = 		{ .r = 0.0f, .g = 1.0f, .b = 0.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_YELLOW =		{ .r = 1.0f, .g = 1.0f, .b = 0.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_BLUE = 		{ .r = 0.0f, .g = 0.0f, .b = 1.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_MAGENTA = 	{ .r = 1.0f, .g = 0.0f, .b = 1.0f, .a = 1.0f };
+GCTK_CONST_IMPL Color COLOR_CYAN = 		{ .r = 0.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f };
 
 Color ColorFromBytes(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 	return ColorCreate(
@@ -257,6 +263,72 @@ bool Mat4Eq(Mat4 a, Mat4 b) {
 			Vec4Eq(a.rows[2], b.rows[2]) && Vec4Eq(a.rows[3], b.rows[3]);
 }
 
+Vec4 Mat4GetColumn(Mat4 mat, int idx) {
+	if (idx < 0 || idx > 3) return VEC4_ZERO;
+	return Vec4Create(mat.rows[0].items[idx], mat.rows[1].items[idx], mat.rows[2].items[idx], mat.rows[3].items[idx]);
+}
+
+Vec3 Mat4GetTranslation(Mat4 mat) {
+	return Vec4XYZ(mat.rows[3]);
+}
+Quat Mat4GetRotation(Mat4 mat) {
+	// From OpenTK https://github.com/opentk/opentk/blob/master/src/OpenTK.Mathematics/Matrix/Matrix4.cs#L235
+	Vec3 row0 = Vec3Norm(Vec4XYZ(mat.rows[0]));
+	Vec3 row1 = Vec3Norm(Vec4XYZ(mat.rows[1]));
+	Vec3 row2 = Vec3Norm(Vec4XYZ(mat.rows[2]));
+	Quat result = QUAT_IDENTITY;
+
+	float trace = 0.25f * (row0.x + row1.y + row2.z + 1.0f);
+	float sq;
+
+	if (trace > 0) {
+		sq = sqrtf(trace);
+
+		result.w = sq;
+		sq = 1.0f / (4.0f * sq);
+
+		result.x = (row1.z - row2.y) * sq;
+		result.y = (row2.x - row0.z) * sq;
+		result.z = (row0.y - row1.x) * sq;
+	} else if (row0.x > row1.y && row0.x > row2.z) {
+		sq = 2.0f * sqrtf(1.0f + row0.x - row1.y - row2.z);
+
+		result.x = 0.25f * sq;
+		sq = 1.0f / sq;
+		result.w = (row2.y - row1.z) * sq;
+		result.y = (row1.x - row0.y) * sq;
+		result.z = (row2.x - row0.y) * sq;
+	} else if (row1.y > row2.y) {
+		sq = 2.0f * sqrtf(1.0f + row1.y - row0.x - row2.z);
+
+		result.y = 0.25f * sq;
+		sq = 1.0f / sq;
+		result.w = (row2.x - row0.z) * sq;
+		result.x = (row1.x - row0.y) * sq;
+		result.z = (row2.y - row1.z) * sq;
+	} else {
+		sq = 2.0f * sqrtf(1.0f + row2.z - row0.x - row1.y);
+
+		result.z = (float)(0.25 * sq);
+		sq = 1.0f / sq;
+		result.w = (row1.x - row0.y) * sq;
+		result.x = (row2.x + row0.z) * sq;
+		result.y = (row2.y + row1.z) * sq;
+	}
+
+	return QuatNorm(result);
+}
+Vec3 Mat4GetScale(Mat4 mat) {
+	return Vec3Create(
+		Vec3Length(Vec4XYZ(mat.rows[0])),
+		Vec3Length(Vec4XYZ(mat.rows[1])),
+		Vec3Length(Vec4XYZ(mat.rows[2]))
+	);
+}
+Vec4 Mat4GetProjection(Mat4 mat) {
+	return Mat4GetColumn(mat, 3);
+}
+
 Mat4* Mat4Translate(Mat4* mat, Vec3 translation) {
 	if (mat != NULL) {
 		glm_translate(mat->cglm, translation.items);
@@ -274,7 +346,7 @@ Mat4* Mat4Rotate(Mat4* mat, Quat rotation) {
 }
 Mat4* Mat4RotateAA(Mat4* mat, AxisAngle rotation) {
 	if (mat != NULL) {
-		glm_rotate(mat->cglm, rotation.angle, rotation.axis.items);
+		glm_rotate(mat->cglm, DegToRad(rotation.angle), rotation.axis.items);
 	}
 
 	return mat;
@@ -291,7 +363,7 @@ Mat4 Mat4CreateProjection(float fov, float width, float height, float nearZ, flo
 	return projection;
 }
 
-const Mat4 MAT4_IDENTITY = {
+GCTK_CONST_IMPL Mat4 MAT4_IDENTITY = {
 	.rows = {
 		{ 1, 0, 0, 0 },
 		{ 0, 1, 0, 0 },

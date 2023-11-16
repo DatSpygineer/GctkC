@@ -37,10 +37,12 @@ extern "C" {
 		#define GCTK_API __attribute__((visibility("default")))
 	#endif
 	#define GCTK_CONST extern const
+	#define GCTK_CONST_IMPL GCTK_API const
 #else
 	#ifdef _WIN32
 		#define GCTK_API __declspec(dllimport)
 		#define GCTK_CONST GCTK_API const
+		#define GCTK_CONST_IMPL const
 	#else
 		#define GCTK_API
 		#define GCTK_CONST extern const

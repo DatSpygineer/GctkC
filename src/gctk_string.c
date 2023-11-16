@@ -24,3 +24,15 @@ errno_t GctkStrCat(char* dest, const char* src, size_t dest_max) {
 	return errno;
 #endif
 }
+
+bool GctkStrEq(const char* a, const char* b, bool case_sensitive) {
+	if (case_sensitive) {
+		return strcmp(a, b) == 0;
+	} else {
+#ifdef _WIN32
+		return _stricmp(a, b) == 0;
+#else
+		return strcasecmp(a, b) == 0;
+#endif
+	}
+}

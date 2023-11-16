@@ -7,6 +7,7 @@
 #include "gctk_texture.h"
 #include "gctk_shader.h"
 #include "gctk_sprite.h"
+#include "gctk_lua.h"
 
 #ifdef __cplusplus
 extern "C" {
