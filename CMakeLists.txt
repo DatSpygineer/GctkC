@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
+
 project(gctk C)
 project(gctk_test C)
 
@@ -47,6 +48,10 @@ else()
 	set(GctkDebug 0)
 endif()
 
+if (NOT DEFINED GCTK_DEBUG_MALLOC)
+	set(GCTK_DEBUG_MALLOC GctkDebug)
+endif()
+
 file(GLOB GCTK_SRC "${CMAKE_CURRENT_LIST_DIR}/src/*.c")
 file(GLOB GCTK_LUA_BINDING_SRC "${CMAKE_CURRENT_LIST_DIR}/src/lua_bindings/*.c")
 
@@ -55,7 +60,7 @@ add_library(gctk SHARED
 	${GCTK_LUA_BINDING_SRC}
 )
 target_compile_definitions(gctk PRIVATE GCTK_DLL_EXPORT)
-target_compile_definitions(gctk PUBLIC GCTK_DEBUG=${GctkDebug})
+target_compile_definitions(gctk PUBLIC GCTK_DEBUG=${GctkDebug} GCTK_DEBUG_MALLOC=${GCTK_DEBUG_MALLOC})
 target_include_directories(gctk PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${GLEW_INCLUDE_DIRS})
 target_link_libraries(gctk PUBLIC lua_static glfw ${GLEW_LIBRARIES} soil2 OpenGL::GL cglm_headers)
 

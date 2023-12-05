@@ -1,4 +1,5 @@
 #include "gctk_string.h"
+#include "crc64.h"
 
 bool GctkStartsWithStr(const char* str, const char* start_with) {
 	return strncmp(str, start_with, strlen(start_with)) == 0;
@@ -35,4 +36,8 @@ bool GctkStrEq(const char* a, const char* b, bool case_sensitive) {
 		return strcasecmp(a, b) == 0;
 #endif
 	}
+}
+
+hash_t GctkStrHash(const char* str) {
+	return crc64(UINT64_MAX, (const uint8_t*)str, strlen(str));
 }

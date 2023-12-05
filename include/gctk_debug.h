@@ -5,6 +5,7 @@
 
 #include "gctk_common.h"
 #include "gctk_filesys.h"
+#include "gctk_msgbox.h"
 
 typedef enum ErrorCode {
 	// No error present
@@ -39,6 +40,10 @@ typedef enum ErrorCode {
 	GCTK_ERROR_FILE_READ,
 	// Failed to write file
 	GCTK_ERROR_FILE_WRITE,
+	// Redefinition of a value
+	GCTK_ERROR_REDEFINITION,
+	// Value undefined
+	GCTK_ERROR_UNDEFINED,
 	// Generic runtime error
 	GCTK_ERROR_RUNTIME
 } ErrorCode;

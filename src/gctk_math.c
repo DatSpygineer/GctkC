@@ -372,6 +372,29 @@ GCTK_CONST_IMPL Mat4 MAT4_IDENTITY = {
 	}
 };
 
+bool SizeEq(Size a, Size b) {
+	return a.width == b.width && a.height == b.height;
+}
+int8_t SizeCmp(Size self, Size b) {
+	return (int8_t)((Vec2Length(self.vec2) > Vec2Length(b.vec2)) ? -1 : (SizeEq(self, b) ? 0 : 1));
+}
+
+bool RectCollisionWithPoint(Rect rect, Vec2 point) {
+	return (point.x >= rect.x && point.x <= rect.x + rect.width) && (point.y >= rect.y && point.y <= rect.y + rect.height);
+}
+bool RectCollisionWithRect(Rect rect, Rect other) {
+	// Check if left is bigger or both equal
+	if (SizeCmp(rect.size, other.size) <= 0) {
+		return RectCollisionWithPoint(rect, other.location);
+	// Check if left is smaller
+	} else {
+		return RectCollisionWithPoint(other, rect.location);
+	}
+}
+bool RectEq(Rect a, Rect b) {
+	return Vec2Eq(a.location, b.location) && SizeEq(a.size, b.size);
+}
+
 float Lerp(float a, float b, float blend) {
 	return glm_lerp(a, b, blend);
 }
@@ -427,10 +450,10 @@ void SeedRandom(uint32_t seed) {
 }
 
 int RandomInt(int min, int max) {
-	return ((rand() % (max - min)) + min);
+	return ((rand() % (max - min)) + min); // NOLINT: Usage of standard C rand
 }
 float RandomFloat(float min, float max) {
-	return Lerp(min, max, ((float) rand() / (float) RAND_MAX));
+	return Lerp(min, max, ((float) rand() / (float) RAND_MAX)); // NOLINT: Usage of standard C rand
 }
 Vec2 RandomVec2(Vec2 min, Vec2 max) {
 	return (Vec2) {

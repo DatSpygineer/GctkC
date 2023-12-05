@@ -16,6 +16,14 @@ extern "C" {
 	#include <ShObjIdl_core.h>
 	#define GCTK_PATH_MAX 512 //MAX_PATH
 	#define GCTK_SIZE_FORMAT "%llu"
+
+	#ifndef __GNUC__
+		#if SIZE_MAX == UINT64_MAX
+			typedef int64_t ssize_t;
+		#else
+			typedef int32_t ssize_t;
+		#endif
+	#endif
 #else
 	#include <unistd.h>
 	#include <limits.h>
@@ -25,6 +33,8 @@ extern "C" {
 	#define GCTK_SIZE_FORMAT "%lu"
 	typedef int errno_t;
 #endif
+
+typedef uint64_t hash_t;
 
 #ifdef __cplusplus
 }

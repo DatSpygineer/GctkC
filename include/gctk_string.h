@@ -29,6 +29,8 @@ GCTK_API bool GctkEndsWithChr(const char* str, char ends_with);
 GCTK_API errno_t GctkStrCat(char* dest, const char* src, size_t dest_max);
 GCTK_API bool GctkStrEq(const char* a, const char* b, bool case_sensitive);
 
+GCTK_API hash_t GctkStrHash(const char* str);
+
 #ifdef __cplusplus
 }
 #endif

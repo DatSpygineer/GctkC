@@ -218,6 +218,23 @@ GCTK_API Mat4 Mat4CreateProjection(float fov, float width, float height, float n
 
 GCTK_CONST Mat4 MAT4_IDENTITY;
 
+typedef union {
+	struct { float width, height; };
+	Vec2 vec2;
+} Size;
+
+GCTK_API bool SizeEq(Size a, Size b);
+GCTK_API int8_t SizeCmp(Size self, Size b);
+
+typedef union {
+	struct { float x, y, width, height; };
+	struct { Vec2 location; Size size; };
+} Rect;
+
+GCTK_API bool RectCollisionWithPoint(Rect rect, Vec2 point);
+GCTK_API bool RectCollisionWithRect(Rect rect, Rect other);
+GCTK_API bool RectEq(Rect a, Rect b);
+
 GCTK_API float Lerp(float a, float b, float blend);
 GCTK_API double LerpD(double a, double b, double blend);
 GCTK_API Vec2 Vec2Lerp(Vec2 a, Vec2 b, float blend);

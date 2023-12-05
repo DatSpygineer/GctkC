@@ -8,6 +8,8 @@
 #include "gctk_shader.h"
 #include "gctk_sprite.h"
 #include "gctk_lua.h"
+#include "gctk_vector.h"
+#include "gctk_hashmap.h"
 
 #ifdef __cplusplus
 extern "C" {

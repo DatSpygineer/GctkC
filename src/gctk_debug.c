@@ -179,5 +179,24 @@ void GctkCrash() {
 	);
 	GctkJoinPaths(dest_path, temp, GCTK_PATH_MAX);
 	GctkMoveFile(src_path, dest_path);
+
+	const MessageBoxResult res = GctkMessageBoxF("Fatal error!", GCTK_MSGICON_ERROR, GCTK_MSGBTN_YES_NO,
+		"Engine has encountered a fatal error! Crashlog copied over to \"%s\".\nPlease report this to the developer!\nWould you like to open the crash log folder?",
+		dest_path
+	);
+	if (res == GCTK_MSGRES_YES) {
+		memset(dest_path, 0, GCTK_PATH_MAX);
+		strcpy(dest_path, GctkBaseDir());
+		GctkJoinPaths(dest_path, "crash", GCTK_PATH_MAX);
+
+		char cmd[512] = { 0 };
+#ifdef _WIN32
+		snprintf(cmd, 512, "explorer \"%s\"", dest_path);
+#else
+		snprintf(cmd, 512, "xdg-open \"%s\"", dest_path);
+#endif
+		system(cmd);
+	}
+
 	GctkClose();
 }
