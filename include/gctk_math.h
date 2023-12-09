@@ -215,6 +215,7 @@ GCTK_API Mat4* Mat4RotateAA(Mat4* mat, AxisAngle rotation);
 
 GCTK_API Mat4 Mat4CreateOrtho(float x, float y, float width, float height, float nearZ, float farZ);
 GCTK_API Mat4 Mat4CreateProjection(float fov, float width, float height, float nearZ, float farZ);
+GCTK_API Mat4 Mat4CreateTransform(Vec3 position, Vec3 size, Vec3 scale, Quat rotation);
 
 GCTK_CONST Mat4 MAT4_IDENTITY;
 
@@ -263,8 +264,6 @@ GCTK_API Vec4 RandomVec4(Vec4 min, Vec4 max);
 
 #define DegToRad(__deg__) ((__deg__) * (PI / 180.0f))
 #define RadToDeg(__rad__) ((__rad__) * (180.0f / PI))
-
-GCTK_API Mat4 GctkCreateTransform(Vec3 position, Vec3 size, Vec3 scale, Quat rotation);
 
 #ifdef __cplusplus
 }

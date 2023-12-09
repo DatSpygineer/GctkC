@@ -24,5 +24,5 @@ GCTK_API void GctkLogMalloc(void* ptr, size_t size, size_t count);
 GCTK_API void GctkLogResize(void* ptr_old, void* ptr_new, size_t old_count, size_t new_count, size_t size);
 GCTK_API void GctkLogFree(void* ptr);
 
-GCTK_API inline void* GctkMemCpy(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size);
-GCTK_API inline void* GctkMemMove(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size);
+GCTK_API void* GctkMemCpy(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size);
+GCTK_API void* GctkMemMove(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size);

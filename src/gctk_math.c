@@ -477,7 +477,7 @@ Vec4 RandomVec4(Vec4 min, Vec4 max) {
 	};
 }
 
-Mat4 GctkCreateTransform(Vec3 position, Vec3 size, Vec3 scale, Quat rotation) {
+Mat4 Mat4CreateTransform(Vec3 position, Vec3 size, Vec3 scale, Quat rotation) {
 	Mat4 result = MAT4_IDENTITY;
 	Mat4Translate(&result, position);
 	Mat4Translate(&result, Vec3MulScalar(size, 0.5f));

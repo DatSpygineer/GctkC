@@ -61,7 +61,7 @@ void GctkLuaPushRect(lua_State* L, Rect rect) {
 	lua_setmetatable(L, -2);
 }
 
-static Rect GctkLuaGetRect(lua_State* L, int idx) {
+Rect GctkLuaGetRect(lua_State* L, int idx) {
 	lua_getfield(L, idx, "location");
 	Vec2 location = GctkLuaGetVec2(L, -1);
 	lua_pop(L, 1);

@@ -67,9 +67,9 @@ bool GctkDrawSprite(const Sprite* sprite, Vec3 position, Vec3 scale, Quat rotati
 	}
 
 	GctkShaderSetUniformColor(sprite->shader, "ColorTint", tint);
-	GctkShaderSetUniformMat4(sprite->shader, "uModel", GctkCreateTransform(
+	GctkShaderSetUniformMat4(sprite->shader, "uModel", Mat4CreateTransform(
 			position,
-			sprite->texture != NULL ? Vec3Create((float)sprite->texture->info.width, (float)sprite->texture->info.height, 1.0f) : VEC3_ONE,
+			sprite->texture != NULL ? Vec3Create((float) sprite->texture->info.width, (float) sprite->texture->info.height, 1.0f) : VEC3_ONE,
 			scale,
 			rotation
 		)

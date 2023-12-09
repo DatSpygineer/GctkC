@@ -78,9 +78,9 @@ void GctkDefaultFree(void** ptr) {
 	}
 }
 
-inline void* GctkMemCpy(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size) {
+void* GctkMemCpy(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size) {
 	return memcpy(dest + (dest_offset * item_size), src + (src_offset * item_size), count * item_size);
 }
-inline void* GctkMemMove(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size) {
+void* GctkMemMove(void* dest, size_t dest_offset, const void* src, size_t src_offset, size_t count, size_t item_size) {
 	return memmove(dest + (dest_offset * item_size), src + (src_offset * item_size), count * item_size);
 }

@@ -5,7 +5,6 @@
 #ifdef _WIN32
 	#include <Windows.h>
 #else
-	#error "TODO: Implement for linux"
 #endif
 
 typedef enum {

@@ -1,5 +1,7 @@
 #include "gctk_msgbox.h"
 
+#include <stdarg.h>
+
 MessageBoxResult GctkMessageBox(const char* title, const char* message, MessageBoxIcon icon, MessageBoxButtonType buttons) {
 #ifdef _WIN32
 	int flags = 0;

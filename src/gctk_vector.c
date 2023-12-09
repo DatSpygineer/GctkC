@@ -77,7 +77,7 @@ bool GctkVectorPush(Vector* vector, const void* data) {
 	vector->count++;
 	return true;
 }
-inline bool GctkVectorPop(Vector* vector) {
+bool GctkVectorPop(Vector* vector) {
 	if (vector == NULL && vector->count > 0) {
 		return false;
 	}
@@ -91,7 +91,7 @@ inline bool GctkVectorPop(Vector* vector) {
 
 	return true;
 }
-inline bool GctkVectorPopN(Vector* vector, size_t n) {
+bool GctkVectorPopN(Vector* vector, size_t n) {
 	if (vector == NULL) {
 		return false;
 	}
@@ -115,10 +115,10 @@ bool GctkVectorRemove(Vector* vector, size_t idx) {
 	}
 	return false;
 }
-inline void* GctkVectorData(Vector* vector, size_t idx) {
+void* GctkVectorData(Vector* vector, size_t idx) {
 	return (vector != NULL && vector->count > 0 && idx < vector->count) ? (vector->data + (vector->item_size * idx)) : NULL;
 }
-inline const void* GctkVectorDataConst(const Vector* vector, size_t idx) {
+const void* GctkVectorDataConst(const Vector* vector, size_t idx) {
 	return (vector != NULL && vector->count > 0 && idx < vector->count) ? (vector->data + (vector->item_size * idx)) : NULL;
 }
 ssize_t GctkVectorFind(const Vector* vector, const void* data_to_find) {
@@ -156,37 +156,37 @@ bool GctkFreeVector(Vector* vector) {
 	return false;
 }
 
-inline bool GctkVectorPushInt(Vector* vector, int value) {
+bool GctkVectorPushInt(Vector* vector, int value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
 
-inline bool GctkVectorPushInt8(Vector* vector, int8_t value) {
+bool GctkVectorPushInt8(Vector* vector, int8_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushInt16(Vector* vector, int16_t value) {
+bool GctkVectorPushInt16(Vector* vector, int16_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushInt32(Vector* vector, int32_t value) {
+bool GctkVectorPushInt32(Vector* vector, int32_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushInt64(Vector* vector, int64_t value) {
+bool GctkVectorPushInt64(Vector* vector, int64_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushUInt8(Vector* vector, uint8_t value) {
+bool GctkVectorPushUInt8(Vector* vector, uint8_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushUInt16(Vector* vector, uint16_t value) {
+bool GctkVectorPushUInt16(Vector* vector, uint16_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushUInt32(Vector* vector, uint32_t value) {
+bool GctkVectorPushUInt32(Vector* vector, uint32_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushUInt64(Vector* vector, uint64_t value) {
+bool GctkVectorPushUInt64(Vector* vector, uint64_t value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushFloat(Vector* vector, float value) {
+bool GctkVectorPushFloat(Vector* vector, float value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
-inline bool GctkVectorPushDouble(Vector* vector, double value) {
+bool GctkVectorPushDouble(Vector* vector, double value) {
 	return vector != NULL && vector->item_size == sizeof(value) && GctkVectorPush(vector, &value);
 }
